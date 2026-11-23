@@ -3,138 +3,280 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Meridian Space Settlement</title>
+<title>Meridian</title>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #050818;
-  --text: #e8ecff;
-  --mut: #9aa3d4;
-  --card: #0e1438;
-  --line: #1e2a6a;
-  --teal: #2ee6c8;
-  --pink: #ff4fa3;
-  --sun: #ffc93c;
-  --vio: #9b7bff;
-}
-* { box-sizing: border-box; }
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Space Grotesk', system-ui, sans-serif;
-  line-height: 1.55;
+  background: #050818;
+  color: #e8ecff;
+  font-family: 'Space Grotesk', sans-serif;
+  line-height: 1.5;
 }
 #particles {
   position: fixed;
-  inset: 0;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   z-index: -1;
   pointer-events: none;
 }
 main {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 40px 20px 100px;
+  padding: 40px 20px;
 }
-.hero {
-  text-align: center;
-  padding: 40px 0 20px;
-}
-.hero h1 {
+h1 {
   font-family: 'Unbounded', sans-serif;
-  font-size: clamp(2.8rem, 9vw, 5.2rem);
+  font-size: 3.5rem;
+  text-align: center;
   margin: 0;
-  background: linear-gradient(90deg, var(--teal), var(--vio), var(--pink));
+  background: linear-gradient(90deg, #2ee6c8, #9b7bff, #ff4fa3);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0 20px rgba(155, 123, 255, 0.4));
 }
-.hero p {
-  color: var(--mut);
-  max-width: 620px;
-  margin: 14px auto 0;
-  font-size: 1.1rem;
-}
-section { margin-top: 60px; }
-h2 {
-  font-family: 'Unbounded', sans-serif;
-  font-size: 1.9rem;
-  margin: 0 0 16px;
-  text-shadow: 0 0 12px rgba(46, 230, 200, 0.25);
+.subtitle {
+  text-align: center;
+  color: #9aa3d4;
+  margin-bottom: 40px;
 }
 .card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 18px;
+  background: #0e1438;
+  border: 1px solid #1e2a6a;
+  border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 0 30px rgba(46, 230, 200, 0.06);
+  margin: 30px 0;
 }
-.btns {
+h2 {
+  font-family: 'Unbounded', sans-serif;
+  margin-top: 0;
+}
+button, .clickable {
+  background: #2ee6c8;
+  color: #10123a;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+button:hover, .clickable:hover {
+  filter: brightness(1.1);
+}
+.grid {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 14px 0;
+  margin: 12px 0;
 }
-button {
-  border: 0;
-  border-radius: 12px;
-  padding: 10px 18px;
-  font-weight: 700;
-  cursor: pointer;
-  background: var(--teal);
-  color: #10123a;
-  transition: 0.15s;
-}
-button:hover { filter: brightness(1.1); }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 12px;
+.info {
   margin-top: 12px;
+  color: #9aa3d4;
+  min-height: 50px;
 }
-.item {
-  background: #0a1030;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.2s;
+svg {
+  width: 100%;
+  max-width: 400px;
+  display: block;
+  margin: 0 auto;
 }
-.item:hover, .item.on {
-  border-color: var(--teal);
-  box-shadow: 0 0 14px rgba(46, 230, 200, 0.4);
-}
-#info, #mat-info, #job-detail {
-  margin-top: 16px;
-  color: var(--mut);
-  min-height: 70px;
-}
-svg { width: 100%; max-width: 480px; display: block; margin: 0 auto; }
-.seg { cursor: pointer; transition: 0.2s; }
-.seg:hover, .seg.on { filter: brightness(1.35); }
-input[type=range] { width: 100%; accent-color: var(--vio); margin: 6px 0 12px; }
-.big {
-  font-family: 'Unbounded', sans-serif;
-  font-size: 2.6rem;
+input[type=range] {
+  width: 100%;
   margin: 8px 0;
-  color: var(--teal);
+}
+.big {
+  font-size: 2.4rem;
+  font-family: 'Unbounded', sans-serif;
+  color: #2ee6c8;
+  margin: 10px 0;
 }
 </style>
 </head>
 <body>
 <canvas id="particles"></canvas>
 <main>
-<header class="hero">
   <h1>Meridian</h1>
-  <p>A rotating ring-shaped space settlement designed for the NSS Gerard K. O’Neill Space Settlement Contest.</p>
-</header>
+  <p class="subtitle">Rotating Space Settlement • NSS Contest Project</p>
 
-<section>
-  <h2>Explore the Settlement</h2>
   <div class="card">
-    <svg viewBox="0 0 420 420">
-      <circle cx="210" cy="210" r="185" fill="none" stroke="#2a3270" stroke-width="3"/>
-      <g id="segs"></g>
-      <circle id="
+    <h2>Explore the Ring</h2>
+    <svg viewBox="0 0 400 400">
+      <circle cx="200" cy="200" r="160" fill="none" stroke="#2a3270" stroke-width="4"/>
+      <g id="ring-sections"></g>
+      <circle cx="200" cy="200" r="35" fill="#ff9f43" stroke="#fff" id="hub" style="cursor:pointer"/>
+    </svg>
+    <div id="section-buttons" class="grid"></div>
+    <div id="section-info" class="info">Click a section or the centre.</div>
+  </div>
+
+  <div class="card">
+    <h2>Materials</h2>
+    <div id="materials" class="grid"></div>
+    <div id="material-info" class="info">Click a material.</div>
+  </div>
+
+  <div class="card">
+    <h2>Roles on Meridian</h2>
+    <div id="roles" class="grid"></div>
+    <div id="role-info" class="info">Click a role.</div>
+  </div>
+
+  <div class="card">
+    <h2>Gravity Calculator</h2>
+    <label>Radius: <span id="radius-val">400</span> m</label>
+    <input type="range" id="radius" min="200" max="700" value="400">
+    <label>Speed: <span id="rpm-val">2.2</span> rpm</label>
+    <input type="range" id="rpm" min="1" max="4" step="0.1" value="2.2">
+    <div class="big" id="gravity">1.00 g</div>
+  </div>
+</main>
+
+<script>
+// Simple particle background
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+const dots = [];
+for (let i = 0; i < 80; i++) {
+  dots.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.5,
+    speed: Math.random() * 0.3 + 0.1
+  });
+}
+function animateDots() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  dots.forEach(d => {
+    d.y -= d.speed;
+    if (d.y < 0) d.y = canvas.height;
+    ctx.fillStyle = 'rgba(180,200,255,0.6)';
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  requestAnimationFrame(animateDots);
+}
+animateDots();
+
+// Ring sections
+const sections = [
+  { name: "Living", color: "#ff7a59", desc: "Homes, shops and community spaces." },
+  { name: "Sports", color: "#2ee6c8", desc: "Exercise and recreation areas." },
+  { name: "Farms", color: "#7bd957", desc: "Food production zones." },
+  { name: "Labs", color: "#9b7bff", desc: "Research and education." },
+  { name: "Medical", color: "#ff4fa3", desc: "Hospital and clinics." },
+  { name: "Power", color: "#ffc93c", desc: "Energy and workshops." }
+];
+
+const ringGroup = document.getElementById('ring-sections');
+const buttonContainer = document.getElementById('section-buttons');
+const sectionInfo = document.getElementById('section-info');
+
+sections.forEach((sec, i) => {
+  const startAngle = i * 60;
+  const endAngle = startAngle + 55;
+  const radius = 140;
+  const cx = 200, cy = 200;
+
+  function toXY(angle) {
+    const rad = (angle - 90) * Math.PI / 180;
+    return {
+      x: cx + radius * Math.cos(rad),
+      y: cy + radius * Math.sin(rad)
+    };
+  }
+  const p1 = toXY(startAngle);
+  const p2 = toXY(endAngle);
+
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', `M ${p1.x} ${p1.y} A ${radius} ${radius} 0 0 1 ${p2.x} ${p2.y}`);
+  path.setAttribute('stroke', sec.color);
+  path.setAttribute('stroke-width', '36');
+  path.setAttribute('fill', 'none');
+  path.style.cursor = 'pointer';
+  path.onclick = () => showSection(i);
+  ringGroup.appendChild(path);
+
+  const btn = document.createElement('button');
+  btn.textContent = sec.name;
+  btn.style.background = sec.color;
+  btn.onclick = () => showSection(i);
+  buttonContainer.appendChild(btn);
+});
+
+function showSection(i) {
+  sectionInfo.innerHTML = `<strong>${sections[i].name}</strong><br>${sections[i].desc}`;
+}
+document.getElementById('hub').onclick = () => {
+  sectionInfo.innerHTML = `<strong>Docking Hub</strong><br>Central area for spacecraft and logistics.`;
+};
+
+// Materials
+const materials = [
+  { name: "Aluminium", desc: "Structural frames and beams." },
+  { name: "HDPE", desc: "Radiation shielding." },
+  { name: "Aerogel", desc: "Thermal insulation." },
+  { name: "Titanium", desc: "Strong joints." },
+  { name: "Composites", desc: "Lightweight panels." },
+  { name: "Water", desc: "Life support and shielding." }
+];
+const matContainer = document.getElementById('materials');
+const matInfo = document.getElementById('material-info');
+materials.forEach(m => {
+  const div = document.createElement('div');
+  div.className = 'clickable';
+  div.textContent = m.name;
+  div.style.background = '#1a2458';
+  div.style.padding = '12px';
+  div.style.borderRadius = '10px';
+  div.onclick = () => matInfo.innerHTML = `<strong>${m.name}</strong><br>${m.desc}`;
+  matContainer.appendChild(div);
+});
+
+// Roles
+const roles = [
+  { name: "Medical", count: "~1,200", desc: "Healthcare and monitoring." },
+  { name: "Engineers", count: "~1,000", desc: "Maintenance and systems." },
+  { name: "Management", count: "~800", desc: "Operations and planning." },
+  { name: "Public Service", count: "~2,000", desc: "Safety and support." },
+  { name: "Civilians", count: "~4,500", desc: "Families and residents." }
+];
+const roleContainer = document.getElementById('roles');
+const roleInfo = document.getElementById('role-info');
+roles.forEach(r => {
+  const div = document.createElement('div');
+  div.className = 'clickable';
+  div.textContent = r.name;
+  div.style.background = '#1a2458';
+  div.style.padding = '12px';
+  div.style.borderRadius = '10px';
+  div.onclick = () => roleInfo.innerHTML = `<strong>${r.name}</strong> (${r.count})<br>${r.desc}`;
+  roleContainer.appendChild(div);
+});
+
+// Gravity calculator
+const radiusInput = document.getElementById('radius');
+const rpmInput = document.getElementById('rpm');
+function updateGravity() {
+  const R = Number(radiusInput.value);
+  const rpm = Number(rpmInput.value);
+  const omega = rpm * 2 * Math.PI / 60;
+  const g = (omega * omega * R) / 9.81;
+  document.getElementById('radius-val').textContent = R;
+  document.getElementById('rpm-val').textContent = rpm.toFixed(1);
+  document.getElementById('gravity').textContent = g.toFixed(2) + ' g';
+}
+radiusInput.oninput = updateGravity;
+rpmInput.oninput = updateGravity;
+updateGravity();
+</script>
+</body>
+</html>
