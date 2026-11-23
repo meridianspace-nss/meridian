@@ -10,7 +10,7 @@
 *{box-sizing:border-box}
 html{scroll-padding-top:20px}
 body{margin:0;background:var(--bg);color:var(--text);font-family:'Space Grotesk',system-ui,sans-serif;line-height:1.55;overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 20% 10%,rgba(155,123,255,.25),transparent 40%),radial-gradient(circle at 85% 30%,rgba(255,79,163,.18),transparent 40%),radial-gradient(circle at 50% 100%,rgba(46,230,200,.15),transparent 45%)}
+#particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
 h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;margin:0;line-height:1.15}
 main{max-width:1060px;margin:0 auto;padding:28px 18px 80px}
 .hero{text-align:center;padding:40px 0 10px}
@@ -61,9 +61,16 @@ footer{margin-top:70px;text-align:center;color:var(--mut);font-size:.92rem}
 .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:16px}
 .fact{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 15px rgba(155,123,255,.1)}
 .fact strong{display:block;font-family:'Unbounded',sans-serif;font-size:1.4rem;color:var(--teal);text-shadow:0 0 10px rgba(46,230,200,.5)}
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:12px}
+.mat-btn{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:.2s}
+.mat-btn:hover,.mat-btn.on{border-color:var(--teal);box-shadow:0 0 12px rgba(46,230,200,.4)}
+.risk-card{cursor:pointer;transition:.2s}
+.risk-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(46,230,200,.15)}
+#job-detail{min-height:80px;margin-top:12px}
 </style>
 </head>
 <body>
+<canvas id="particles"></canvas>
 <main>
 <header class="hero">
 <h1>Meridian</h1>
@@ -118,6 +125,30 @@ footer{margin-top:70px;text-align:center;color:var(--mut);font-size:.92rem}
 </div>
 <div class="card" id="info"></div>
 </div>
+</section>
+
+<section>
+<h2>Materials Explorer</h2>
+<p class="sub">Click a material to see how it is used on Meridian.</p>
+<div class="card">
+<div class="mat-grid" id="mat-grid"></div>
+<div id="mat-info" style="margin-top:16px;color:var(--mut)">Select a material above.</div>
+</div>
+</section>
+
+<section>
+<h2>Population & Roles</h2>
+<p class="sub">Click a role to see more detail.</p>
+<div class="card">
+<div class="btns" id="job-btns"></div>
+<div id="job-detail"></div>
+</div>
+</section>
+
+<section>
+<h2>Risks & Mitigation</h2>
+<p class="sub">Click any risk card to expand the mitigation approach.</p>
+<div class="two" id="risks"></div>
 </section>
 
 <section>
@@ -194,156 +225,20 @@ footer{margin-top:70px;text-align:center;color:var(--mut);font-size:.92rem}
 </main>
 
 <script>
-const C=document.createElementNS.bind(document,'http://www.w3.org/2000/svg');
-const S=[
-{n:'Living centre',c:'#ff7a59',t:'Apartments, homes, shops and parks where residents live. Artificial gravity here feels like walking on Earth.',f:['Houses families in small neighbourhoods','Parks and gardens along the floor','Closest to full 1 g at the rim']},
-{n:'Sports centre',c:'#2ee6c8',t:'Courts, tracks and a swimming pool. Exercise keeps bones and muscles strong in space.',f:['Running track follows the curve of the ring','Spin direction changes how a ball curves','Weak-gravity court near the hub']},
-{n:'Agri farms',c:'#7bd957',t:'Hydroponic and soil farms grow vegetables, fruit and grain under bright LED lights.',f:['Water is recycled again and again','Plants clean the air and add oxygen','Farm waste becomes compost']},
-{n:'Science labs',c:'#9b7bff',t:'Research on space medicine, materials and plants, plus a school and library.',f:['Experiments in both gravity and near-zero gravity','Observation windows face the stars','Shares data with Earth']},
-{n:'Medical and school',c:'#ff4fa3',t:'Hospital, clinic and classrooms. Doctors watch how long-term spin affects the body.',f:['Check-ups for bones, heart and balance','Classrooms for all ages','Emergency shuttle bay to the hub']},
-{n:'Power and workshops',c:'#ffc93c',t:'Solar power storage, recycling plants and repair workshops keep Meridian running.',f:['Solar panels feed batteries here','Recycling plant reclaims metals','Spare parts are 3D printed']},
-{n:'Docking hub',c:'#ff9f43',t:'Four docking ports sit on the spin axis in the centre. The hub barely moves, so spacecraft can dock safely. People ride spoke lifts out to the ring.',f:['Almost zero gravity at the centre','Four ports for cargo and crew ships','Spokes carry lifts and pipes to the ring']}
-];
-const cx=210,cy=210,R=150;
-function pt(a,r){const t=(a-90)*Math.PI/180;return[cx+r*Math.cos(t),cy+r*Math.sin(t)]}
-const segs=document.getElementById('segs'),sp=document.getElementById('spokes'),leg=document.getElementById('legend'),info=document.getElementById('info');
-let paths=[];
-for(let i=0;i<6;i++){
- const a0=i*60+3,a1=i*60+57,[x0,y0]=pt(a0,R),[x1,y1]=pt(a1,R);
- const p=C('path');p.setAttribute('d',`M${x0} ${y0}A${R} ${R} 0 0 1 ${x1} ${y1}`);p.setAttribute('stroke',S[i].c);p.setAttribute('class','seg');
- p.setAttribute('tabindex','0');p.setAttribute('role','button');p.setAttribute('aria-label',S[i].n);
- p.onclick=()=>show(i);p.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(i)}};
- segs.appendChild(p);paths.push(p);
- const [sx,sy]=pt(i*60+30,44),[ex,ey]=pt(i*60+30,R-22);
- const l=C('line');l.setAttribute('x1',sx);l.setAttribute('y1',sy);l.setAttribute('x2',ex);l.setAttribute('y2',ey);sp.appendChild(l);
+// Particle background
+const pCanvas = document.getElementById('particles');
+const pCtx = pCanvas.getContext('2d');
+let particles = [];
+function resizeParticles() {
+  pCanvas.width = window.innerWidth;
+  pCanvas.height = window.innerHeight;
 }
-const chips=[];
-S.forEach((s,i)=>{const b=document.createElement('button');b.className='chip';b.style.setProperty('--c',s.c);b.textContent=s.n;b.onclick=()=>show(i);leg.appendChild(b);chips.push(b)});
-document.getElementById('hub').onclick=()=>show(6);
-document.getElementById('hub').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(6)}};
-function show(i){
- const s=S[i];paths.forEach((p,k)=>p.classList.toggle('on',k===i));chips.forEach((c,k)=>c.classList.toggle('on',k===i));
- info.style.setProperty('--c',s.c);
- info.innerHTML=`<h3>${s.n}</h3><p style="margin:0">${s.t}</p><ul>${s.f.map(x=>`<li>${x}</li>`).join('')}</ul>`;
-}
-show(0);
-const L=document.getElementById('lasers');
-for(let i=0;i<12;i++){const [x,y]=pt(i*30,196);const c=C('circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',5);c.setAttribute('fill','#ff4fa3');c.setAttribute('stroke','#fff');c.setAttribute('stroke-width',1.5);L.appendChild(c)}
-
-const r=document.getElementById('r'),p=document.getElementById('p');
-function grav(){
- const R=+r.value,rpm=+p.value,w=rpm*2*Math.PI/60,g=w*w*R/9.81,v=w*R;
- document.getElementById('rv').textContent=R+' m';document.getElementById('pv').textContent=rpm.toFixed(1)+' rpm';
- document.getElementById('gv').textContent=g.toFixed(2)+' g';
- document.getElementById('gi').style.left=Math.min(g/2,1)*100+'%';
- document.getElementById('gs').textContent=`ω = ${w.toFixed(3)} rad/s, rim speed ${v.toFixed(0)} m/s. `+(rpm>4?'Above about 4 rpm many people feel dizzy.':g<0.1?'Too weak to walk normally.':g>1.3?'Heavier than Earth.':'A comfortable spin.');
- document.getElementById('ring').style.animationDuration=(60/rpm)+'s';
-}
-r.oninput=p.oninput=grav;
-document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{const g=+b.dataset.g;p.value=Math.min(10,Math.max(0.5,(Math.sqrt(g*9.81/r.value)*60/(2*Math.PI)))).toFixed(2);grav()});
-grav();
-
-const cv=document.getElementById('cv'),x=cv.getContext('2d'),st=document.getElementById('st');
-let laser=true,deb=[],frag=[],flash=0;
-const BX=380,WX=520;
-document.getElementById('lz').onclick=e=>{laser=!laser;e.target.textContent='Laser: '+(laser?'ON':'OFF');e.target.className='b'+(laser?'':' off');st.textContent=laser?'Laser is on. Debris will be pushed off course before it arrives.':'Laser is off. Only the Whipple shield protects the hull.'};
-document.getElementById('fire').onclick=()=>{deb.push({x:10,y:120+Math.random()*60,vx:5,vy:0,r:10,pushed:false})};
-function loop(){
- x.fillStyle='#070a24';x.fillRect(0,0,760,300);
- for(let i=0;i<40;i++){x.fillStyle='rgba(255,255,255,.35)';x.fillRect((i*97)%760,(i*53)%300,1.5,1.5)}
- x.fillStyle='#ff4fa3';x.beginPath();x.arc(70,30,9,0,7);x.fill();
- x.fillStyle='#2ee6c8';x.fillRect(BX-3,40,6,220);
- x.fillStyle=flash>0?'#ffc93c':'#9b7bff';x.fillRect(WX,20,22,260);
- x.fillStyle='#a3a9dd';x.font='14px sans-serif';x.fillText('laser',45,56);x.fillText('bumper',BX-24,30);x.fillText('main hull',WX-8,296);
- deb.forEach(d=>{
-  if(laser&&d.x>150&&d.x<330){x.strokeStyle='#ff4fa3';x.lineWidth=3;x.beginPath();x.moveTo(70,30);x.lineTo(d.x,d.y);x.stroke();d.pushed=true;d.dir=d.dir||(d.y<150?-1:1);d.vy+=d.dir*0.17}
-  d.x+=d.vx;d.y+=d.vy;
-  x.fillStyle='#ffc93c';x.beginPath();x.arc(d.x,d.y,d.r,0,7);x.fill();
-  if(d.x>=BX-3&&d.x<=BX+3&&d.y>40&&d.y<260&&!d.dead){d.dead=true;for(let k=0;k<26;k++){const a=(Math.random()-.5)*1.3;frag.push({x:BX,y:d.y,vx:Math.cos(a)*(1.5+Math.random()*1.3),vy:Math.sin(a)*(1.5+Math.random()*1.5),life:1})}st.textContent='The bumper shattered the debris into a cloud. The hull took a wide, weak hit and held.'}
-  if(d.x>780||d.y<-20||d.y>320){d.dead=true;if(d.pushed)st.textContent='The laser pushed the debris off course. It missed the settlement.'}
- });
- deb=deb.filter(d=>!d.dead);
- frag.forEach(f=>{f.x+=f.vx;f.y+=f.vy;x.fillStyle='rgba(255,201,60,'+f.life+')';x.fillRect(f.x,f.y,3,3);if(f.x>=WX){f.life=0;flash=8}f.life-=0.003});
- frag=frag.filter(f=>f.life>0);if(flash>0)flash--;
- requestAnimationFrame(loop);
-}
-loop();
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-(function(){
-const box=document.getElementById('m3d');
-let ren;
-try{
-if(!window.THREE)throw 0;
-const T=THREE,PI=Math.PI;
-const W=()=>box.clientWidth||600,H=()=>Math.round(Math.min(W()*0.66,560));
-ren=new T.WebGLRenderer({antialias:true});
-ren.setPixelRatio(Math.min(window.devicePixelRatio||1,2));ren.setSize(W(),H());box.appendChild(ren.domElement);
-const scene=new T.Scene();scene.background=new T.Color(0x040820);
-const cam=new T.PerspectiveCamera(40,W()/H(),0.1,300);
-scene.add(new T.AmbientLight(0x7080b8,0.7));
-const sun=new T.DirectionalLight(0xfff0d6,1.6);sun.position.set(20,16,12);scene.add(sun);
-const fill=new T.PointLight(0x4f7cff,0.8,60);fill.position.set(-14,-6,-10);scene.add(fill);
-const sp=[];for(let i=0;i<1500;i++){const u=Math.random()*2-1,a=Math.random()*PI*2,s=Math.sqrt(1-u*u),r=120;sp.push(r*s*Math.cos(a),r*u,r*s*Math.sin(a))}
-const sg=new T.BufferGeometry();sg.setAttribute('position',new T.Float32BufferAttribute(sp,3));
-scene.add(new T.Points(sg,new T.PointsMaterial({color:0xffffff,size:0.5})));
-const earth=new T.Mesh(new T.SphereGeometry(40,48,32),new T.MeshStandardMaterial({color:0x143c8f,emissive:0x0a2a70,emissiveIntensity:0.6,roughness:0.9}));
-earth.position.set(-8,-50,-14);scene.add(earth);
-const atm=new T.Mesh(new T.SphereGeometry(41.4,48,32),new T.MeshBasicMaterial({color:0x4aa8ff,transparent:true,opacity:0.22,side:T.BackSide}));atm.position.copy(earth.position);scene.add(atm);
-const hull=new T.MeshStandardMaterial({color:0xc9cfdc,metalness:0.85,roughness:0.35});
-const dark=new T.MeshStandardMaterial({color:0x2a3050,metalness:0.6,roughness:0.5});
-const glow=c=>new T.MeshBasicMaterial({color:c});
-const ringG=new T.Group();scene.add(ringG);
-const R=6,TR=0.75;
-const ring=new T.Mesh(new T.TorusGeometry(R,TR,20,96),hull);ring.rotation.x=PI/2;ringG.add(ring);
-const N=150,win=new T.InstancedMesh(new T.BoxGeometry(0.3,0.16,0.08),glow(0xffd37a),N*3),d=new T.Object3D();let k=0;
-for(let j=0;j<3;j++){const ph=(j-1)*0.65;for(let i=0;i<N;i++){const a=i/N*PI*2,rr=R+TR*Math.cos(ph),y=TR*Math.sin(ph);
-d.position.set(rr*Math.cos(a),y,rr*Math.sin(a));d.lookAt(d.position.x+Math.cos(a)*Math.cos(ph),y+Math.sin(ph),d.position.z+Math.sin(a)*Math.cos(ph));d.updateMatrix();win.setMatrixAt(k++,d.matrix)}}
-ringG.add(win);
-const cols=[0xff7a59,0x2ee6c8,0x7bd957,0x9b7bff,0xff4fa3,0xffc93c];
-cols.forEach((c,i)=>{const p=new T.Group();p.rotation.y=i*PI/3;const m=new T.Mesh(new T.TorusGeometry(R,0.09,8,24,PI/3-0.12),glow(c));m.rotation.x=PI/2;m.position.y=TR+0.05;p.add(m);ringG.add(p)});
-for(let i=0;i<6;i++){const p=new T.Group();p.rotation.y=i*PI/3;const m=new T.Mesh(new T.CylinderGeometry(0.2,0.2,4.3,12),hull);m.rotation.z=PI/2;m.position.x=3.3;p.add(m);ringG.add(p)}
-const hub=new T.Mesh(new T.CylinderGeometry(1.4,1.4,1.5,28),hull);ringG.add(hub);
-[-0.75,0.75].forEach(y=>{const t=new T.Mesh(new T.TorusGeometry(1.4,0.09,8,40),glow(0xff9f43));t.rotation.x=PI/2;t.position.y=y;ringG.add(t)});
-const cn=document.createElement('canvas');cn.width=cn.height=64;const cc=cn.getContext('2d');cc.fillStyle='#1b3fb8';cc.fillRect(0,0,64,64);cc.strokeStyle='#7fa2ff';cc.lineWidth=2;cc.strokeRect(1,1,62,62);cc.beginPath();cc.moveTo(32,0);cc.lineTo(32,64);cc.moveTo(0,32);cc.lineTo(64,32);cc.stroke();
-const tex=new T.CanvasTexture(cn);tex.wrapS=tex.wrapT=T.RepeatWrapping;tex.repeat.set(4,2);
-const pm=new T.MeshStandardMaterial({map:tex,metalness:0.6,roughness:0.3,emissive:0x0a1a66,emissiveIntensity:0.5});
-for(let i=0;i<4;i++){const p=new T.Group();p.rotation.y=PI/4+i*PI/2;
-const arm=new T.Mesh(new T.CylinderGeometry(0.08,0.08,2,8),dark);arm.rotation.z=PI/2;arm.position.x=7.8;p.add(arm);
-const pan=new T.Mesh(new T.BoxGeometry(3.4,0.05,1.9),pm);pan.position.x=10.5;pan.rotation.z=0.12;p.add(pan);ringG.add(p)}
-const tower=new T.Group();scene.add(tower);
-tower.add(new T.Mesh(new T.CylinderGeometry(0.42,0.5,8.5,18),hull));
-[-1,1].forEach(s=>{const cone=new T.Mesh(new T.ConeGeometry(0.42,0.9,18),dark);cone.position.y=s*4.65;if(s<0)cone.rotation.x=PI;tower.add(cone);
-const tip=new T.Mesh(new T.SphereGeometry(0.12,10,10),glow(0xffffff));tip.position.y=s*5.2;tower.add(tip);
-for(let i=0;i<4;i++){const p=new T.Group();p.rotation.y=i*PI/2;const c=new T.Mesh(new T.CylinderGeometry(0.2,0.2,1.1,12),dark);c.rotation.z=PI/2;c.position.set(0.9,s*2.6,0);p.add(c);
-const e=new T.Mesh(new T.TorusGeometry(0.2,0.05,8,16),glow(0xff9f43));e.rotation.y=PI/2;e.position.set(1.45,s*2.6,0);p.add(e);tower.add(p)}});
-const shield=new T.Mesh(new T.TorusGeometry(R,1.35,14,96),new T.MeshBasicMaterial({color:0x2ee6c8,wireframe:true,transparent:true,opacity:0.4}));shield.rotation.x=PI/2;shield.visible=false;ringG.add(shield);
-const lasers=new T.Group();lasers.visible=false;ringG.add(lasers);const beams=[];
-for(let i=0;i<12;i++){const p=new T.Group();p.rotation.y=i*PI/6;
-const t=new T.Mesh(new T.SphereGeometry(0.18,10,10),glow(0xff4fa3));t.position.x=R+TR+0.5;p.add(t);
-const b=new T.Mesh(new T.CylinderGeometry(0.035,0.035,6,6),new T.MeshBasicMaterial({color:0xff4fa3,transparent:true,opacity:0.8}));b.rotation.z=PI/2;b.position.x=R+TR+3.6;p.add(b);beams.push(b);lasers.add(p)}
-let az=0.6,el=0.5,dist=20,drag=false,lx=0,ly=0,spin=true,orbit=true,tm=0;
-if(matchMedia('(prefers-reduced-motion:reduce)').matches){spin=false;orbit=false}
-function place(){cam.position.set(dist*Math.cos(el)*Math.sin(az),dist*Math.sin(el),dist*Math.cos(el)*Math.cos(az));cam.lookAt(0,0,0)}
-const cv=ren.domElement;
-cv.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY});
-addEventListener('pointerup',()=>drag=false);
-addEventListener('pointermove',e=>{if(!drag)return;az-=(e.clientX-lx)*0.008;el=Math.max(-1.2,Math.min(1.4,el+(e.clientY-ly)*0.008));lx=e.clientX;ly=e.clientY});
-const zm=document.getElementById('zm');zm.oninput=()=>dist=+zm.value;
-function tog(id,label,get,set){const b=document.getElementById(id);b.onclick=()=>{set(!get());b.textContent=label+': '+(get()?'ON':'OFF');b.classList.toggle('off',!get())}}
-tog('t-spin','Ring spin',()=>spin,v=>spin=v);
-tog('t-shield','Whipple shield',()=>shield.visible,v=>shield.visible=v);
-tog('t-laser','Lasers',()=>lasers.visible,v=>lasers.visible=v);
-tog('t-orbit','Auto-orbit',()=>orbit,v=>orbit=v);
-document.getElementById('t-reset').onclick=()=>{az=0.6;el=0.5;dist=20;zm.value=20};
-addEventListener('resize',()=>{ren.setSize(W(),H());cam.aspect=W()/H();cam.updateProjectionMatrix()});
-function frame(){tm+=0.05;if(spin)ringG.rotation.y+=0.004;if(orbit&&!drag)az+=0.002;
-beams.forEach((b,i)=>b.material.opacity=0.45+0.4*Math.sin(tm*2+i));
-place();ren.render(scene,cam);requestAnimationFrame(frame)}
-frame();
-}catch(e){box.style.lineHeight='1.5';box.innerHTML='<p class="stat" style="padding:20px">The 3D viewer needs WebGL, which is not available in this browser.</p>'}
-})();
-</script>
-</body>
-</html>
+window.addEventListener('resize', resizeParticles);
+resizeParticles();
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * pCanvas.width;
+    this.y = Math.random() * pCanvas.height;
+    this.size = Math.random() * 1.8 + 0.4;
+    this.speedX = (Math.random() - 0.5)
