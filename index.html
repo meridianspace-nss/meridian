@@ -6,191 +6,135 @@
 <title>Meridian Space Settlement</title>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#050818;--text:#e8ecff;--mut:#9aa3d4;--card:#0e1438;--line:#1e2a6a;--teal:#2ee6c8;--pink:#ff4fa3;--sun:#ffc93c;--vio:#9b7bff}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;line-height:1.55}
-#particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
-main{max-width:1060px;margin:0 auto;padding:30px 18px 80px}
-.hero{text-align:center;padding:40px 0}
-.hero h1{font-family:'Unbounded',sans-serif;font-size:clamp(2.5rem,8vw,5rem);background:linear-gradient(90deg,var(--teal),var(--vio),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;margin:0}
-.hero p{color:var(--mut);max-width:600px;margin:12px auto 0}
-section{margin-top:50px}
-h2{font-family:'Unbounded',sans-serif;font-size:1.8rem;margin:0 0 12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:12px}
-.btns{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
-button{border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--teal);color:#10123a}
-button:hover{filter:brightness(1.1)}
-.mat-grid,.job-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:10px}
-.mat-btn,.job-btn{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;cursor:pointer}
-.mat-btn:hover,.job-btn:hover,.on{border-color:var(--teal);box-shadow:0 0 10px rgba(46,230,200,.4)}
-#info,#mat-info,#job-detail{margin-top:12px;color:var(--mut);min-height:60px}
-svg{width:100%;max-width:500px;display:block;margin:0 auto}
-.seg{cursor:pointer}
-.seg:hover,.seg.on{filter:brightness(1.3)}
+:root {
+  --bg: #050818;
+  --text: #e8ecff;
+  --mut: #9aa3d4;
+  --card: #0e1438;
+  --line: #1e2a6a;
+  --teal: #2ee6c8;
+  --pink: #ff4fa3;
+  --sun: #ffc93c;
+  --vio: #9b7bff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  line-height: 1.55;
+}
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px 100px;
+}
+.hero {
+  text-align: center;
+  padding: 40px 0 20px;
+}
+.hero h1 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(2.8rem, 9vw, 5.2rem);
+  margin: 0;
+  background: linear-gradient(90deg, var(--teal), var(--vio), var(--pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 20px rgba(155, 123, 255, 0.4));
+}
+.hero p {
+  color: var(--mut);
+  max-width: 620px;
+  margin: 14px auto 0;
+  font-size: 1.1rem;
+}
+section { margin-top: 60px; }
+h2 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 1.9rem;
+  margin: 0 0 16px;
+  text-shadow: 0 0 12px rgba(46, 230, 200, 0.25);
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 0 30px rgba(46, 230, 200, 0.06);
+}
+.btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0;
+}
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--teal);
+  color: #10123a;
+  transition: 0.15s;
+}
+button:hover { filter: brightness(1.1); }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.item {
+  background: #0a1030;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.item:hover, .item.on {
+  border-color: var(--teal);
+  box-shadow: 0 0 14px rgba(46, 230, 200, 0.4);
+}
+#info, #mat-info, #job-detail {
+  margin-top: 16px;
+  color: var(--mut);
+  min-height: 70px;
+}
+svg { width: 100%; max-width: 480px; display: block; margin: 0 auto; }
+.seg { cursor: pointer; transition: 0.2s; }
+.seg:hover, .seg.on { filter: brightness(1.35); }
+input[type=range] { width: 100%; accent-color: var(--vio); margin: 6px 0 12px; }
+.big {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 2.6rem;
+  margin: 8px 0;
+  color: var(--teal);
+}
 </style>
 </head>
 <body>
 <canvas id="particles"></canvas>
 <main>
 <header class="hero">
-<h1>Meridian</h1>
-<p>Rotating space settlement • NSS Gerard K. O’Neill Contest</p>
+  <h1>Meridian</h1>
+  <p>A rotating ring-shaped space settlement designed for the NSS Gerard K. O’Neill Space Settlement Contest.</p>
 </header>
 
 <section>
-<h2>Explore the Ring</h2>
-<div class="card">
-<svg viewBox="0 0 420 420">
-<circle cx="210" cy="210" r="180" fill="none" stroke="#334" stroke-width="2"/>
-<g id="segs"></g>
-<circle id="hub" cx="210" cy="210" r="40" fill="#ff9f43" stroke="#fff" style="cursor:pointer"/>
-</svg>
-<div id="legend" class="btns"></div>
-<div id="info">Click a section of the ring.</div>
-</div>
-</section>
-
-<section>
-<h2>Materials Explorer</h2>
-<div class="card">
-<div class="mat-grid" id="mat-grid"></div>
-<div id="mat-info">Click a material.</div>
-</div>
-</section>
-
-<section>
-<h2>Population & Roles</h2>
-<div class="card">
-<div class="job-grid" id="job-btns"></div>
-<div id="job-detail">Click a role.</div>
-</div>
-</section>
-
-<section>
-<h2>Gravity Calculator</h2>
-<div class="card">
-<label>Radius: <b id="rv">300</b> m</label><br>
-<input type="range" id="r" min="100" max="800" value="300" style="width:100%">
-<br><label>RPM: <b id="pv">2.0</b></label><br>
-<input type="range" id="p" min="0.5" max="5" step="0.1" value="2.0" style="width:100%">
-<p style="font-size:2rem;margin:10px 0" id="gv">1.00 g</p>
-</div>
-</section>
-</main>
-
-<script>
-// Particles
-const pc = document.getElementById('particles');
-const ctx = pc.getContext('2d');
-function resize(){pc.width=innerWidth;pc.height=innerHeight}
-addEventListener('resize',resize);resize();
-let pts=[];
-for(let i=0;i<100;i++)pts.push({x:Math.random()*pc.width,y:Math.random()*pc.height,s:Math.random()*2,v:Math.random()*0.5});
-function particles(){
-  ctx.clearRect(0,0,pc.width,pc.height);
-  pts.forEach(p=>{
-    p.y-=p.v;if(p.y<0)p.y=pc.height;
-    ctx.fillStyle='rgba(180,200,255,.6)';
-    ctx.beginPath();ctx.arc(p.x,p.y,p.s,0,6.28);ctx.fill();
-  });
-  requestAnimationFrame(particles);
-}
-particles();
-
-// Ring sections
-const sections = [
-  {n:'Living',c:'#ff7a59',t:'Homes, shops and parks.'},
-  {n:'Sports',c:'#2ee6c8',t:'Exercise and recreation areas.'},
-  {n:'Farms',c:'#7bd957',t:'Hydroponic food production.'},
-  {n:'Labs',c:'#9b7bff',t:'Research and education.'},
-  {n:'Medical',c:'#ff4fa3',t:'Hospital and clinics.'},
-  {n:'Power',c:'#ffc93c',t:'Energy and workshops.'}
-];
-const segs = document.getElementById('segs');
-const legend = document.getElementById('legend');
-const info = document.getElementById('info');
-sections.forEach((s,i)=>{
-  const a1 = i*60, a2 = a1+55;
-  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
-  const r=150, cx=210, cy=210;
-  const x1 = cx + r*Math.cos((a1-90)*Math.PI/180);
-  const y1 = cy + r*Math.sin((a1-90)*Math.PI/180);
-  const x2 = cx + r*Math.cos((a2-90)*Math.PI/180);
-  const y2 = cy + r*Math.sin((a2-90)*Math.PI/180);
-  path.setAttribute('d',`M${x1} ${y1} A${r} ${r} 0 0 1 ${x2} ${y2}`);
-  path.setAttribute('stroke',s.c);
-  path.setAttribute('stroke-width','40');
-  path.setAttribute('fill','none');
-  path.classList.add('seg');
-  path.onclick = () => show(i);
-  segs.appendChild(path);
-
-  const btn = document.createElement('button');
-  btn.textContent = s.n;
-  btn.style.background = s.c;
-  btn.onclick = () => show(i);
-  legend.appendChild(btn);
-});
-function show(i){
-  document.querySelectorAll('.seg').forEach((p,k)=>p.classList.toggle('on',k===i));
-  info.innerHTML = `<strong>${sections[i].n}</strong><br>${sections[i].t}`;
-}
-document.getElementById('hub').onclick = () => info.innerHTML = '<strong>Docking Hub</strong><br>Central zero-g docking and logistics area.';
-
-// Materials
-const mats = [
-  {n:'Aluminium',d:'Structural frames and beams'},
-  {n:'HDPE',d:'Radiation shielding'},
-  {n:'Aerogel',d:'Thermal insulation'},
-  {n:'Titanium',d:'High-load joints'},
-  {n:'Composites',d:'Lightweight panels'},
-  {n:'Water',d:'Shielding + life support'}
-];
-const mg = document.getElementById('mat-grid');
-const mi = document.getElementById('mat-info');
-mats.forEach(m=>{
-  const b = document.createElement('div');
-  b.className = 'mat-btn';
-  b.textContent = m.n;
-  b.onclick = () => {
-    document.querySelectorAll('.mat-btn').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    mi.innerHTML = `<strong>${m.n}</strong><br>${m.d}`;
-  };
-  mg.appendChild(b);
-});
-
-// Jobs
-const jobs = [
-  {n:'Medical',p:'~1,200',d:'Doctors and health staff'},
-  {n:'Engineers',p:'~1,000',d:'Maintenance and systems'},
-  {n:'Management',p:'~800',d:'Operations and logistics'},
-  {n:'Public Service',p:'~2,000',d:'Safety and administration'},
-  {n:'Civilians',p:'~4,500',d:'Families and residents'}
-];
-const jb = document.getElementById('job-btns');
-const jd = document.getElementById('job-detail');
-jobs.forEach(j=>{
-  const b = document.createElement('div');
-  b.className = 'job-btn';
-  b.textContent = j.n;
-  b.onclick = () => jd.innerHTML = `<strong>${j.n}</strong> — ${j.p}<br>${j.d}`;
-  jb.appendChild(b);
-});
-
-// Gravity
-const rr = document.getElementById('r');
-const pp = document.getElementById('p');
-function updateG(){
-  const R = +rr.value, rpm = +pp.value;
-  const w = rpm * 2 * Math.PI / 60;
-  const g = (w*w*R)/9.81;
-  document.getElementById('rv').textContent = R;
-  document.getElementById('pv').textContent = rpm.toFixed(1);
-  document.getElementById('gv').textContent = g.toFixed(2) + ' g';
-}
-rr.oninput = pp.oninput = updateG;
-updateG();
-</script>
-</body>
-</html>
+  <h2>Explore the Settlement</h2>
+  <div class="card">
+    <svg viewBox="0 0 420 420">
+      <circle cx="210" cy="210" r="185" fill="none" stroke="#2a3270" stroke-width="3"/>
+      <g id="segs"></g>
+      <circle id="
