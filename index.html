@@ -2,71 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Meridian Space Settlement</title>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#050818;--text:#e8ecff;--mut:#9aa3d4;--card:#0e1438;--line:#1e2a6a;--teal:#2ee6c8;--pink:#ff4fa3;--sun:#ffc93c;--vio:#9b7bff;--coral:#ff7a59}
+:root{--bg:#050818;--text:#e8ecff;--mut:#9aa3d4;--card:#0e1438;--line:#1e2a6a;--teal:#2ee6c8;--pink:#ff4fa3;--sun:#ffc93c;--vio:#9b7bff}
 *{box-sizing:border-box}
-html{scroll-padding-top:20px}
-body{margin:0;background:var(--bg);color:var(--text);font-family:'Space Grotesk',system-ui,sans-serif;line-height:1.55;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;line-height:1.55}
 #particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
-h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;margin:0;line-height:1.15}
-main{max-width:1060px;margin:0 auto;padding:28px 18px 80px}
-.hero{text-align:center;padding:40px 0 10px}
-.hero h1{font-size:clamp(2.6rem,8vw,5rem);background:linear-gradient(90deg,var(--teal),var(--vio),var(--pink),var(--sun));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 20px rgba(155,123,255,.4))}
-.hero p{max-width:640px;margin:16px auto 0;color:var(--mut);font-size:1.08rem}
-section{margin-top:64px}
-h2{font-size:clamp(1.5rem,4.5vw,2.1rem);margin-bottom:8px;text-shadow:0 0 12px rgba(46,230,200,.3)}
-.sub{color:var(--mut);margin:0 0 20px;max-width:700px}
-.grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:start}
-@media(max-width:760px){.grid{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 0 30px rgba(46,230,200,.08),inset 0 0 20px rgba(155,123,255,.05)}
-svg{width:100%;height:auto;display:block}
-#ring{transform-origin:210px 210px;animation:spin 22s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.seg{cursor:pointer;transition:stroke-width .2s,filter .2s}
-.seg:hover,.seg.on{stroke-width:56;filter:brightness(1.3) drop-shadow(0 0 8px currentColor)}
-.port{cursor:pointer}
-.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.chip{border:2px solid var(--c);background:transparent;color:var(--text);padding:7px 14px;border-radius:99px;font:inherit;font-size:.9rem;cursor:pointer;transition:.2s}
-.chip.on,.chip:hover{background:var(--c);color:#10123a;box-shadow:0 0 12px var(--c)}
-:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
-#info h3{font-size:1.3rem;margin:0 0 10px;color:var(--c,var(--teal))}
-#info ul{padding-left:18px;color:var(--mut);margin:12px 0 0}
-.sliders label{display:flex;justify-content:space-between;font-weight:600;margin-top:16px}
-input[type=range]{width:100%;accent-color:var(--vio);margin-top:4px}
-.big{font-family:'Unbounded',sans-serif;font-size:clamp(2.2rem,6vw,3.2rem);margin:10px 0 0;text-shadow:0 0 15px rgba(46,230,200,.5)}
-.bar{height:18px;border-radius:99px;background:linear-gradient(90deg,var(--vio),var(--teal),var(--sun),var(--coral));position:relative;margin-top:12px;box-shadow:0 0 15px rgba(155,123,255,.4)}
-.bar i{position:absolute;top:-6px;width:6px;height:30px;border-radius:4px;background:var(--text);transform:translateX(-50%);transition:left .25s}
-.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-button.b{border:0;border-radius:12px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer;color:#10123a;background:var(--teal);transition:.15s;box-shadow:0 0 12px rgba(46,230,200,.4)}
-button.b:hover{filter:brightness(1.1);box-shadow:0 0 18px rgba(46,230,200,.6)}
-button.b.alt{background:var(--pink);box-shadow:0 0 12px rgba(255,79,163,.4)}
-button.b.sun{background:var(--sun);box-shadow:0 0 12px rgba(255,201,60,.4)}
-button.b.off{background:var(--line);color:var(--text);box-shadow:none}
-.formula{font-family:'Unbounded',sans-serif;font-size:1.15rem;color:var(--sun);margin:0 0 8px;text-shadow:0 0 10px rgba(255,201,60,.5)}
-canvas{width:100%;height:auto;border-radius:14px;background:#070a24;display:block;border:1px solid var(--line)}
-.stat{margin-top:12px;color:var(--mut);min-height:1.6em}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
-@media(max-width:700px){.two{grid-template-columns:1fr}}
-.two .card h3{margin:0 0 8px;font-size:1.1rem}
-.two .card p{margin:0;color:var(--mut)}
-#m3d{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#050a24;touch-action:pan-y;cursor:grab;line-height:0;box-shadow:0 0 30px rgba(46,230,200,.1)}
-#m3d:active{cursor:grabbing}
-.zoom{display:flex;align-items:center;gap:12px;margin-top:16px;font-weight:600}
-.zoom input{flex:1}
-footer{margin-top:70px;text-align:center;color:var(--mut);font-size:.92rem}
-@media(prefers-reduced-motion:reduce){#ring{animation:none}}
-.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:16px}
-.fact{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 15px rgba(155,123,255,.1)}
-.fact strong{display:block;font-family:'Unbounded',sans-serif;font-size:1.4rem;color:var(--teal);text-shadow:0 0 10px rgba(46,230,200,.5)}
-.mat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:12px}
-.mat-btn{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:.2s}
-.mat-btn:hover,.mat-btn.on{border-color:var(--teal);box-shadow:0 0 12px rgba(46,230,200,.4)}
-.risk-card{cursor:pointer;transition:.2s}
-.risk-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(46,230,200,.15)}
-#job-detail{min-height:80px;margin-top:12px}
+main{max-width:1060px;margin:0 auto;padding:30px 18px 80px}
+.hero{text-align:center;padding:40px 0}
+.hero h1{font-family:'Unbounded',sans-serif;font-size:clamp(2.5rem,8vw,5rem);background:linear-gradient(90deg,var(--teal),var(--vio),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;margin:0}
+.hero p{color:var(--mut);max-width:600px;margin:12px auto 0}
+section{margin-top:50px}
+h2{font-family:'Unbounded',sans-serif;font-size:1.8rem;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:12px}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+button{border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--teal);color:#10123a}
+button:hover{filter:brightness(1.1)}
+.mat-grid,.job-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:10px}
+.mat-btn,.job-btn{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;cursor:pointer}
+.mat-btn:hover,.job-btn:hover,.on{border-color:var(--teal);box-shadow:0 0 10px rgba(46,230,200,.4)}
+#info,#mat-info,#job-detail{margin-top:12px;color:var(--mut);min-height:60px}
+svg{width:100%;max-width:500px;display:block;margin:0 auto}
+.seg{cursor:pointer}
+.seg:hover,.seg.on{filter:brightness(1.3)}
 </style>
 </head>
 <body>
@@ -74,171 +34,163 @@ footer{margin-top:70px;text-align:center;color:var(--mut);font-size:.92rem}
 <main>
 <header class="hero">
 <h1>Meridian</h1>
-<p>A rotating ring-shaped space settlement that creates artificial gravity. Built for the NSS Gerard K. O’Neill Space Settlement Contest.</p>
+<p>Rotating space settlement • NSS Gerard K. O’Neill Contest</p>
 </header>
 
 <section>
-<h2>Contributors</h2>
+<h2>Explore the Ring</h2>
 <div class="card">
-<ol>
-<li>Nihit Singh</li>
-<li>Nishant Purohit</li>
-<li>Medhansh Phirke</li>
-<li>Hridhaan Chakravarti</li>
-<li>Namish Gupta</li>
-<li>Pramath Shukla</li>
-<li>Anmoll Somayaji</li>
-</ol>
-</div>
-</section>
-
-<section>
-<h2>Key Facts</h2>
-<div class="facts">
-<div class="fact"><strong>~12,000</strong>Residents</div>
-<div class="fact"><strong>LEO</strong>Orbit</div>
-<div class="fact"><strong>Modified Torus</strong>Shape</div>
-<div class="fact"><strong>1.8–2.2 rpm</strong>Rotation</div>
-</div>
-</section>
-
-<section>
-<h2>Explore the Settlement</h2>
-<p class="sub">Tap any section of the ring or use the buttons below to learn about each zone.</p>
-<div class="grid">
-<div class="card">
-<svg viewBox="0 0 420 420" role="img" aria-label="Top view of the Meridian ring with six sections and a central docking hub">
-<defs><radialGradient id="hubg"><stop offset="0" stop-color="#ffe9a8"/><stop offset="1" stop-color="#ff9f43"/></radialGradient></defs>
-<circle cx="210" cy="210" r="196" fill="none" stroke="#8b9cff" stroke-width="3" stroke-dasharray="3 7" opacity=".7"/>
-<g id="ring">
-<g id="spokes" stroke="#8b9cff" stroke-width="3" opacity=".6"></g>
-<g id="segs" fill="none" stroke-linecap="butt" stroke-width="44"></g>
-</g>
-<g id="lasers"></g>
-<g class="port" id="hub" tabindex="0" role="button" aria-label="Docking hub">
-<circle cx="210" cy="210" r="42" fill="url(#hubg)" stroke="#fff" stroke-width="2"/>
-<g fill="#2b2f6b"><circle cx="210" cy="190" r="7"/><circle cx="230" cy="210" r="7"/><circle cx="210" cy="230" r="7"/><circle cx="190" cy="210" r="7"/></g>
-<circle cx="210" cy="210" r="5" fill="#fff"/>
-</g>
+<svg viewBox="0 0 420 420">
+<circle cx="210" cy="210" r="180" fill="none" stroke="#334" stroke-width="2"/>
+<g id="segs"></g>
+<circle id="hub" cx="210" cy="210" r="40" fill="#ff9f43" stroke="#fff" style="cursor:pointer"/>
 </svg>
-<div class="legend" id="legend"></div>
-</div>
-<div class="card" id="info"></div>
+<div id="legend" class="btns"></div>
+<div id="info">Click a section of the ring.</div>
 </div>
 </section>
 
 <section>
 <h2>Materials Explorer</h2>
-<p class="sub">Click a material to see how it is used on Meridian.</p>
 <div class="card">
 <div class="mat-grid" id="mat-grid"></div>
-<div id="mat-info" style="margin-top:16px;color:var(--mut)">Select a material above.</div>
+<div id="mat-info">Click a material.</div>
 </div>
 </section>
 
 <section>
 <h2>Population & Roles</h2>
-<p class="sub">Click a role to see more detail.</p>
 <div class="card">
-<div class="btns" id="job-btns"></div>
-<div id="job-detail"></div>
+<div class="job-grid" id="job-btns"></div>
+<div id="job-detail">Click a role.</div>
 </div>
 </section>
 
 <section>
-<h2>Risks & Mitigation</h2>
-<p class="sub">Click any risk card to expand the mitigation approach.</p>
-<div class="two" id="risks"></div>
-</section>
-
-<section>
-<h2>Meridian in 3D</h2>
-<p class="sub">Drag to look around. Toggle the shield and lasers to see the protection layers.</p>
+<h2>Gravity Calculator</h2>
 <div class="card">
-<div id="m3d"></div>
-<div class="btns">
-<button class="b" id="t-spin">Ring spin: ON</button>
-<button class="b alt" id="t-shield">Whipple shield: OFF</button>
-<button class="b sun" id="t-laser">Lasers: OFF</button>
-<button class="b" id="t-orbit">Auto-orbit: ON</button>
-<button class="b off" id="t-reset">Reset view</button>
-</div>
-<label class="zoom">Zoom <input type="range" id="zm" min="10" max="40" value="20" aria-label="Zoom"></label>
+<label>Radius: <b id="rv">300</b> m</label><br>
+<input type="range" id="r" min="100" max="800" value="300" style="width:100%">
+<br><label>RPM: <b id="pv">2.0</b></label><br>
+<input type="range" id="p" min="0.5" max="5" step="0.1" value="2.0" style="width:100%">
+<p style="font-size:2rem;margin:10px 0" id="gv">1.00 g</p>
 </div>
 </section>
-
-<section>
-<h2>Gravity from Spinning</h2>
-<p class="sub">Meridian rotates so the outer rim pushes everything outward — this feels like gravity. The floor is the outer edge of the ring.</p>
-<div class="card">
-<p class="formula">a = ω² × r</p>
-<div class="grid">
-<div class="sliders">
-<label>Ring radius r <b id="rv">150 m</b></label>
-<input type="range" id="r" min="50" max="500" value="150" aria-label="Ring radius">
-<label>Spin rate <b id="pv">2.4 rpm</b></label>
-<input type="range" id="p" min="0.5" max="10" step="0.1" value="2.4" aria-label="Spin rate in rpm">
-<div class="btns">
-<button class="b sun" data-g="1">Earth 1 g</button>
-<button class="b alt" data-g="0.38">Mars 0.38 g</button>
-<button class="b" data-g="0.165">Moon 0.165 g</button>
-</div>
-</div>
-<div>
-<div>Gravity at the rim</div>
-<div class="big" id="gv">1.0 g</div>
-<div class="bar"><i id="gi"></i></div>
-<p class="stat" id="gs"></p>
-</div>
-</div>
-</div>
-</section>
-
-<section>
-<h2>Protection System</h2>
-<p class="sub">Whipple shielding and active laser deflection protect the ring from space debris. Fire a piece of debris to see how each layer works.</p>
-<div class="card">
-<canvas id="cv" width="760" height="300" aria-label="Debris hitting a Whipple shield, with an optional laser"></canvas>
-<div class="btns">
-<button class="b alt" id="fire">Fire debris</button>
-<button class="b" id="lz">Laser: ON</button>
-</div>
-<p class="stat" id="st">Laser is on. Debris will be pushed off course before it arrives.</p>
-<div class="two">
-<div class="card"><h3>Whipple Shield</h3><p>A thin outer bumper sits a short distance from the main hull. Fast debris hits the bumper and breaks into a cloud of tiny fragments. The cloud spreads out, so the inner wall receives a weak, wide impact instead of one sharp strike.</p></div>
-<div class="card"><h3>Active Laser Deflection</h3><p>Sensors track incoming objects. Lasers heat one side of the object, causing a small amount of material to boil off and nudge its path away from the settlement. Whipple shields act as the backup layer.</p></div>
-</div>
-</div>
-</section>
-
-<section>
-<h2>Life Support Overview</h2>
-<div class="two">
-<div class="card"><h3>Atmosphere</h3><p>Oxygen is produced by water electrolysis. Carbon dioxide is removed by regenerable filters and the Sabatier reaction. Continuous monitoring keeps the air safe.</p></div>
-<div class="card"><h3>Water & Waste</h3><p>Most water is recovered from showers, humidity, and other sources, then purified. Waste is sorted and recycled wherever practical.</p></div>
-<div class="card"><h3>Temperature</h3><p>Heat is rejected to space through radiators. Humidity is controlled to prevent condensation. Zones can be adjusted independently.</p></div>
-<div class="card"><h3>Agriculture</h3><p>Hydroponic and aeroponic farms grow fresh food and contribute a limited amount of oxygen. They are not the primary life-support system.</p></div>
-</div>
-</section>
-
-<footer>Meridian · NSS Gerard K. O’Neill Space Settlement Contest · Conceptual student project</footer>
 </main>
 
 <script>
-// Particle background
-const pCanvas = document.getElementById('particles');
-const pCtx = pCanvas.getContext('2d');
-let particles = [];
-function resizeParticles() {
-  pCanvas.width = window.innerWidth;
-  pCanvas.height = window.innerHeight;
+// Particles
+const pc = document.getElementById('particles');
+const ctx = pc.getContext('2d');
+function resize(){pc.width=innerWidth;pc.height=innerHeight}
+addEventListener('resize',resize);resize();
+let pts=[];
+for(let i=0;i<100;i++)pts.push({x:Math.random()*pc.width,y:Math.random()*pc.height,s:Math.random()*2,v:Math.random()*0.5});
+function particles(){
+  ctx.clearRect(0,0,pc.width,pc.height);
+  pts.forEach(p=>{
+    p.y-=p.v;if(p.y<0)p.y=pc.height;
+    ctx.fillStyle='rgba(180,200,255,.6)';
+    ctx.beginPath();ctx.arc(p.x,p.y,p.s,0,6.28);ctx.fill();
+  });
+  requestAnimationFrame(particles);
 }
-window.addEventListener('resize', resizeParticles);
-resizeParticles();
-class Particle {
-  constructor() { this.reset(); }
-  reset() {
-    this.x = Math.random() * pCanvas.width;
-    this.y = Math.random() * pCanvas.height;
-    this.size = Math.random() * 1.8 + 0.4;
-    this.speedX = (Math.random() - 0.5)
+particles();
+
+// Ring sections
+const sections = [
+  {n:'Living',c:'#ff7a59',t:'Homes, shops and parks.'},
+  {n:'Sports',c:'#2ee6c8',t:'Exercise and recreation areas.'},
+  {n:'Farms',c:'#7bd957',t:'Hydroponic food production.'},
+  {n:'Labs',c:'#9b7bff',t:'Research and education.'},
+  {n:'Medical',c:'#ff4fa3',t:'Hospital and clinics.'},
+  {n:'Power',c:'#ffc93c',t:'Energy and workshops.'}
+];
+const segs = document.getElementById('segs');
+const legend = document.getElementById('legend');
+const info = document.getElementById('info');
+sections.forEach((s,i)=>{
+  const a1 = i*60, a2 = a1+55;
+  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  const r=150, cx=210, cy=210;
+  const x1 = cx + r*Math.cos((a1-90)*Math.PI/180);
+  const y1 = cy + r*Math.sin((a1-90)*Math.PI/180);
+  const x2 = cx + r*Math.cos((a2-90)*Math.PI/180);
+  const y2 = cy + r*Math.sin((a2-90)*Math.PI/180);
+  path.setAttribute('d',`M${x1} ${y1} A${r} ${r} 0 0 1 ${x2} ${y2}`);
+  path.setAttribute('stroke',s.c);
+  path.setAttribute('stroke-width','40');
+  path.setAttribute('fill','none');
+  path.classList.add('seg');
+  path.onclick = () => show(i);
+  segs.appendChild(path);
+
+  const btn = document.createElement('button');
+  btn.textContent = s.n;
+  btn.style.background = s.c;
+  btn.onclick = () => show(i);
+  legend.appendChild(btn);
+});
+function show(i){
+  document.querySelectorAll('.seg').forEach((p,k)=>p.classList.toggle('on',k===i));
+  info.innerHTML = `<strong>${sections[i].n}</strong><br>${sections[i].t}`;
+}
+document.getElementById('hub').onclick = () => info.innerHTML = '<strong>Docking Hub</strong><br>Central zero-g docking and logistics area.';
+
+// Materials
+const mats = [
+  {n:'Aluminium',d:'Structural frames and beams'},
+  {n:'HDPE',d:'Radiation shielding'},
+  {n:'Aerogel',d:'Thermal insulation'},
+  {n:'Titanium',d:'High-load joints'},
+  {n:'Composites',d:'Lightweight panels'},
+  {n:'Water',d:'Shielding + life support'}
+];
+const mg = document.getElementById('mat-grid');
+const mi = document.getElementById('mat-info');
+mats.forEach(m=>{
+  const b = document.createElement('div');
+  b.className = 'mat-btn';
+  b.textContent = m.n;
+  b.onclick = () => {
+    document.querySelectorAll('.mat-btn').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    mi.innerHTML = `<strong>${m.n}</strong><br>${m.d}`;
+  };
+  mg.appendChild(b);
+});
+
+// Jobs
+const jobs = [
+  {n:'Medical',p:'~1,200',d:'Doctors and health staff'},
+  {n:'Engineers',p:'~1,000',d:'Maintenance and systems'},
+  {n:'Management',p:'~800',d:'Operations and logistics'},
+  {n:'Public Service',p:'~2,000',d:'Safety and administration'},
+  {n:'Civilians',p:'~4,500',d:'Families and residents'}
+];
+const jb = document.getElementById('job-btns');
+const jd = document.getElementById('job-detail');
+jobs.forEach(j=>{
+  const b = document.createElement('div');
+  b.className = 'job-btn';
+  b.textContent = j.n;
+  b.onclick = () => jd.innerHTML = `<strong>${j.n}</strong> — ${j.p}<br>${j.d}`;
+  jb.appendChild(b);
+});
+
+// Gravity
+const rr = document.getElementById('r');
+const pp = document.getElementById('p');
+function updateG(){
+  const R = +rr.value, rpm = +pp.value;
+  const w = rpm * 2 * Math.PI / 60;
+  const g = (w*w*R)/9.81;
+  document.getElementById('rv').textContent = R;
+  document.getElementById('pv').textContent = rpm.toFixed(1);
+  document.getElementById('gv').textContent = g.toFixed(2) + ' g';
+}
+rr.oninput = pp.oninput = updateG;
+updateG();
+</script>
+</body>
+</html>
